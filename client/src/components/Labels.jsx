@@ -1,35 +1,36 @@
 import React from 'react'
-
-const obj = [
-    {
-        type:'Savings',
-        color:'#f9c74f',
-        percent:20
-    },
-    {
-        type:'Investment',
-        color:'rgb(54, 162, 235)',
-        percent:10
-    },
-    {
-        type:'Expense',
-      
-        color: 'rgb(255, 99, 132)',
-        percent:45
-    },
-]
+import  {useGetCategoriesQuery} from '../store/apiSlice'
+import  {useGetLabelsQuery} from '../store/apiSlice'
+import { getLabels } from '../helper/helper';
 
 const Labels = () => {
+  const {data,isFetching,isSuccess,isError}=useGetLabelsQuery(); 
+ 
+
+let transactions;
+
+if(isFetching){
+ transactions = <div>Fetching</div>
+} else if(isSuccess){
+  transactions =  getLabels(data,'type').map((val,index)=><LabelComponent key={index} data ={val}></LabelComponent>)
+ 
+} else if(isError){
+  transactions = <div>Error</div>
+}
+
   return (
-    <d>
-      {obj.map((val,index)=><LabelComponent key={index} data ={val}></LabelComponent>)}
-    </d>
+    <div>
+      {transactions}
+      
+    </div>
   )
 }
 
 
 function LabelComponent({data}) {
+
     if(!data) return <></>;
+
     return(
         <div className='labels flex justify-between border-b-4'>
              <div className='flex gap-2 mt-2'>
@@ -37,7 +38,7 @@ function LabelComponent({data}) {
                 <div className=''><h3 className='text-md ml-4  '>{data.type??""}</h3></div>
                
             </div> 
-            <h3 className='font-bold mt-3'>{data.percent??""}%</h3>
+            <h3 className='font-bold mt-3'>{(Math.round(data.percent))??0}%</h3>
         </div>
     )
 }

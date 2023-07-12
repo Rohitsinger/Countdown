@@ -13,6 +13,9 @@ app.use(cors());
 
 app.use(express.json())
 
+//using routes
+app.use(require('./routes/route'))
+
 mongoose.connect(process.env.DB,
     {
         useNewUrlParser:true,
@@ -20,6 +23,6 @@ mongoose.connect(process.env.DB,
     }
     ).then(()=>{console.log('connected')})
 
-app.listen(5000,()=>{
+app.listen(process.env.PORT,()=>{
    console.log('Done');
 })

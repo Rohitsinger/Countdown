@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 import './App.css'
 import Graph from './components/Graph'
 import Form from './components/Form'
+
+axios.defaults.baseURL = `http://localhost:5000`
 
 function App() {
 
